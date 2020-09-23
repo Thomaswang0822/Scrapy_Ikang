@@ -16,3 +16,11 @@ NOTICE: You need to check the particular version of your Chrome and download the
 ## Special Notice
 Make sure you put the unzipped chromedriver executable in the correct place, otherwise you get error when initializing the driver. <br />
 The STARTER.py file is just for convinience. You don't need to type in the terminal, just run this file in your IDE. <br />
+
+## Additional Feature: saving data into your database
+1) I use PostgreSQL for a local database. I want to save the data into the table I created. Each item in scrapy is a row (a piece of data) in the table.
+2) You can either execute simple sql commands to create a table, or manually create it in your PostgreSQL visualization software, like Navicat. (It's paid, but super powerful)
+3) Remember to set the data type of each field in your table to be varchar. 
+4) Most importantly, the length of field 'exams' (all medical examinations included in the product) should be long enough, 1023 for me, otherwise you get error when writing data.
+5) After creating table, we need to modify pipeline.py enable data writing. Functions open_spider() and close_spider simply connect to and disconnect from your DB. Function process_item write each of your item into the DB.
+6) Last step, enable pipeline feature. Just uncomment those 3 lines in settings.py
