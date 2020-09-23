@@ -24,3 +24,8 @@ The STARTER.py file is just for convinience. You don't need to type in the termi
 4) Most importantly, the length of field 'exams' (all medical examinations included in the product) should be long enough, 1023 for me, otherwise you get error when writing data.
 5) After creating table, we need to modify pipeline.py enable data writing. Functions open_spider() and close_spider simply connect to and disconnect from your DB. Function process_item write each of your item into the DB.
 6) Last step, enable pipeline feature. Just uncomment those 3 lines in settings.py
+
+## Special Thanks
+Special thanks to Harry Wang, https://github.com/harrywang <br />
+for his fantastic end-to-end tutorial (it has 5 parts), https://towardsdatascience.com/a-minimalist-end-to-end-scrapy-tutorial-part-i-11e350bcdec0  <br />
+and his scrapy-selenium-demo, https://github.com/harrywang/scrapy-selenium-demo <br />
