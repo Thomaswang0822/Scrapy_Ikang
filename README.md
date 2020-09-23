@@ -12,3 +12,7 @@ The key feature to use in selenium is driver. Driver "directs" those actions men
 NOTICE: You need to check the particular version of your Chrome and download the corresponding driver.. Find it in setting->About Google Chrome. <br />
 3) Unzip the file and put it into your project folder. <br />
 4) Install scrapy, selenium package and make sure they can functions in your project environment <br />
+
+## Special Notice
+Make sure you put the unzipped chromedriver executable in the correct place, otherwise you get error when initializing the driver. <br />
+The STARTER.py file is just for convinience. You don't need to type in the terminal, just run this file in your IDE. <br />
