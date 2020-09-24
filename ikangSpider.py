@@ -22,14 +22,18 @@ class IkangspiderSpider(scrapy.Spider):
     switch back to the primary tab 
     return the string
     '''
+
+
     def getDetail(self, driver, good):
         ActionChains(driver).move_to_element(good).click().perform()
         driver.switch_to.window(driver.window_handles[-1])
         time.sleep(1)  # pause for driver to load the page
         exam_list = driver.find_elements_by_xpath('//table/tbody/tr/td/tr/td[1]')
+        content_list = driver.find_elements_by_xpath('//table/tbody/tr/td/tr/td[2]')
         exam_str = ''
         for exam in exam_list:
             exam_str = exam_str + exam.text + ' '
+
         driver.close()
         driver.switch_to.window(driver.window_handles[0])
         return exam_str
@@ -48,11 +52,12 @@ class IkangspiderSpider(scrapy.Spider):
         driver.get(url)
         driver.maximize_window()    # to see all elements
 
-        js = "var q=document.documentElement.scrollTop=800"
+        js = "var q=document.documentElement.scrollTop=1200"
         # use sleep()， implicitly wait doesn't work
         time.sleep(1) #
         driver.execute_script(js)
         time.sleep(1) #
+
 
         # handle first page
         goods_list = driver.find_elements_by_xpath('//div[@class="goods-card-right"]')
@@ -62,10 +67,28 @@ class IkangspiderSpider(scrapy.Spider):
             ikang_item['product'] = good.find_element_by_xpath('./p').text
             ikang_item['price'] = good.find_element_by_xpath('./div[1]/div[1]').text
             ikang_item['sales'] = good.find_element_by_xpath('./div[1]/div[2]').text
-            ### use the helper function
-            ikang_item['exams'] = self.getDetail(driver=driver, good=good)
-            yield ikang_item
 
+            ## helper func can't work well in new situation, since we need to pass in ikang_item
+            ActionChains(driver).move_to_element(good).click().perform()
+            driver.switch_to.window(driver.window_handles[-1])
+            time.sleep(0.5)  # pause for driver to load the page
+            # XPath grammar:
+            # You can add restriction clause to exclude a repetitive part
+            # /tbody -> /tbody[not(position() = last())]
+            #row_list = driver.find_elements_by_xpath('//table/tbody/tr/td/tr')
+            ikang_item['url'] = driver.current_url
+            try:
+                row_list = driver.find_elements_by_xpath('//table/tbody/tr/td/tr')
+                for row in row_list:
+                    ikang_item['exams'] = row.find_element_by_xpath('./td[1]').text
+                    ikang_item['content'] = row.find_element_by_xpath('./td[2]').text
+                    yield ikang_item
+            except:
+                yield ikang_item
+
+
+            driver.close()
+            driver.switch_to.window(driver.window_handles[0])
 
         # looping, click button 5 times, get data in page 2-6
         for i in range(5):
@@ -80,7 +103,23 @@ class IkangspiderSpider(scrapy.Spider):
                 ikang_item['product'] = good.find_element_by_xpath('./p').text
                 ikang_item['price'] = good.find_element_by_xpath('./div[1]/div[1]').text
                 ikang_item['sales'] = good.find_element_by_xpath('./div[1]/div[2]').text
-                ### use the helper function
-                ikang_item['exams'] = self.getDetail(driver=driver, good=good)
-                yield ikang_item
+
+                ## helper func can't work well in new situation, since we need to pass in ikang_item
+                time.sleep(0.5)
+                ActionChains(driver).move_to_element(good).click().perform()
+                driver.switch_to.window(driver.window_handles[-1])
+                time.sleep(0.5)  # pause for driver to load the page
+                ikang_item['url'] = driver.current_url
+                try:
+                    row_list = driver.find_elements_by_xpath('//table/tbody/tr/td/tr')
+                    for row in row_list:
+                        ikang_item['exams'] = row.find_element_by_xpath('./td[1]').text
+                        ikang_item['content'] = row.find_element_by_xpath('./td[2]').text
+                        yield ikang_item
+                except:
+                    yield ikang_item
+
+                driver.close()
+                driver.switch_to.window(driver.window_handles[0])
+                time.sleep(0.5)
 

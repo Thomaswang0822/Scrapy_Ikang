@@ -6,17 +6,15 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-# package to connect to your postgresql database, reading and writing data.
 import psycopg2
 
 
 class IkangPipeline:
-    ### Modify Here
     def open_spider(self, spider):
-        hostname = 'YOUR HOSTNAME'      #if you has a local DB, it's 'localhost'
-        username = 'YOUR USERNAME'   # Usually (default) postgres 
-        password = 'YOUR PASSWORD'
-        database = 'YOUR DATABASE NAME'
+        hostname = 'localhost'
+        username = 'postgres'
+        password = '000822'
+        database = 'MedicalDB'
         self.connection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
         self.cur = self.connection.cursor()
 
@@ -25,15 +23,15 @@ class IkangPipeline:
         self.connection.close()
 
     def process_item(self, item, spider):
-        command = """INSERT INTO "ikang"("Product","Price","Sales","Exams") VALUES(%s,%s,%s,%s)"""
+        command = """INSERT INTO "ikang_ook"("Product","Price","Sales","Exam","Content","Url") VALUES(%s,%s,%s,%s,%s,%s)"""
         param = (
             item["product"],
             item["price"],
             item["sales"],
             item["exams"],
+            item['content'],
+            item['url']
                  )
         self.cur.execute(command, param)
         self.connection.commit()
-        # If you have a postgresql database visualization software, like Navicat,
-        # you can directly check your data in it, no need to check in console.
         # return item

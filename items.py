@@ -12,3 +12,5 @@ class IkangItem(scrapy.Item):
     price = scrapy.Field()
     sales = scrapy.Field()
     exams = scrapy.Field()
+    content = scrapy.Field()
+    url = scrapy.Field()
