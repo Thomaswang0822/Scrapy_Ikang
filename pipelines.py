@@ -10,11 +10,12 @@ import psycopg2
 
 
 class IkangPipeline:
+    ## modify here
     def open_spider(self, spider):
-        hostname = 'localhost'
-        username = 'postgres'
-        password = '000822'
-        database = 'MedicalDB'
+        hostname = 'YOUR HOSTNAME'      #if you has a local DB, it's 'localhost'
+        username = 'YOUR USERNAME'   # Usually (default) postgres 
+        password = 'YOUR PASSWORD'
+        database = 'YOUR DATABASE NAME'
         self.connection = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
         self.cur = self.connection.cursor()
 
