@@ -6,6 +6,13 @@ Thus, we use selenium package together with scrapy. <br />
 Selenium can simulate web-browser actions like opening the browser, scrolling, clicking a button, switching back and forth among tabs, etc. <br />
 The key feature to use in selenium is driver. Driver "directs" those actions mentioned above <br />
 
+## DetailedScrawl Additional Feature
+In the master branch, we simply get the examinations list in each product page and save it as a string in 'exams'.
+In this DetailedScrawl branch, I am required to do more. 
+1. Each product in the previous situation should be "expanded". So, now we should have each exam of each product as a piece of data.
+2. Get corresponding content of each exam
+3. Get url of each product page from driver. 
+
 ## Set up
 1) Install Google Chrome browser. It's most commonly-used in selenium and probably has the best performance <br />
 2) Install chromedriver from: https://chromedriver.chromium.org/downloads <br />
